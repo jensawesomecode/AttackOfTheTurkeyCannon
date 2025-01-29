@@ -9,13 +9,14 @@ public class GroundGenerator : MonoBehaviour
     public GameObject lowGravityGroundPrefab;
     public GameObject quicksandGroundPrefab;
 
-    public int width = 10;
-    public int height = 5;
+    public int width = 100;
+    public int height = 100;
     public float tileSize = 1f;
 
     void Start()
     {
         GenerateGround();
+        CreateBoundaries();
     }
 
     void GenerateGround()
@@ -24,7 +25,7 @@ public class GroundGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                Vector3 position = new Vector3(x * tileSize, y * tileSize, 0);
+                Vector3 position = new Vector3(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2, 0);
                 GameObject selectedPrefab = SelectGroundType();
                 Instantiate(selectedPrefab, position, Quaternion.identity);
             }
@@ -43,4 +44,25 @@ public class GroundGenerator : MonoBehaviour
             default: return normalGroundPrefab;
         }
     }
+    void CreateBoundaries()
+    {
+        float left = -width * tileSize / 2;
+        float right = width * tileSize / 2;
+        float bottom = -height * tileSize / 2;
+        float top = height * tileSize / 2;
+
+        CreateBoundary(new Vector2(left, (top + bottom) / 2), new Vector2(1, height * tileSize)); // Left
+        CreateBoundary(new Vector2(right, (top + bottom) / 2), new Vector2(1, height * tileSize)); // Right
+        CreateBoundary(new Vector2((left + right) / 2, top), new Vector2(width * tileSize, 1)); // Top
+        CreateBoundary(new Vector2((left + right) / 2, bottom), new Vector2(width * tileSize, 1)); // Bottom
+    }
+
+    void CreateBoundary(Vector2 position, Vector2 size)
+    {
+        GameObject boundary = new GameObject("Boundary");
+        boundary.transform.position = position;
+        BoxCollider2D collider = boundary.AddComponent<BoxCollider2D>();
+        collider.size = size;
+    }
+
 }

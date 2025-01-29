@@ -3,7 +3,10 @@ guid: 4c1a1e5470989914a8e01d8f9dc4177c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - normalGroundPrefab: {fileID: 3790649821785183158, guid: 33a2ae290becaa74db5badecd760f103, type: 3}
+  - lowGravityGroundPrefab: {fileID: 4864045304610244169, guid: 9fa4596322a340346b8806f4c7e5763e, type: 3}
+  - quicksandGroundPrefab: {fileID: 8648630326662805911, guid: c80276a3625bfb042ac955a2229e83af, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
