@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float speed = 10f;
+    public float speed = 8f;
     public float lifeTime = 3f;
     public int damage = 1;
+    public GameObject splatEffect;
+
+    private Rigidbody2D rb;
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+        rb.velocity = transform.right * speed;
         Destroy(gameObject, lifeTime);
     }
 
-    void Update()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(gameObject); // Destroy projectile
-            // Add damage logic if needed
+            Instantiate(splatEffect, transform.position, Quaternion.identity); // Spawn splatter
+            Destroy(gameObject);
         }
     }
 }

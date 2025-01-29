@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded = false;
     private bool hasPowerUp = false;
+    private int health = 5; // Starts with 5 health
 
     void Start()
     {
@@ -25,13 +26,12 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleJump();
-        HandleShooting();
-
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(0)) // Left Click for shooting
         {
-            UsePowerUp();
+            Shoot();
         }
     }
+
 
     void HandleMovement()
     {
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             isGrounded = false;
@@ -58,22 +58,36 @@ public class PlayerController : MonoBehaviour
 
     void Shoot()
     {
-        // Explicitly use UnityEngine.Random to avoid ambiguity
-        int randomProjectile = UnityEngine.Random.Range(0, 3);
-        GameObject projectile = null;
-
-        switch (randomProjectile)
-        {
-            case 0: projectile = tomatoPrefab; break;
-            case 1: projectile = eggPrefab; break;
-            case 2: projectile = birdPrefab; break;
-        }
+        // Select a random projectile
+        GameObject projectile = SelectProjectile();
 
         if (projectile != null)
         {
-            Instantiate(projectile, firePoint.position, Quaternion.identity);
+            // Instantiate the projectile at the firePoint position
+            GameObject newProjectile = Instantiate(projectile, firePoint.position, Quaternion.identity);
+
+            // Apply velocity to shoot it forward
+            Rigidbody2D projRb = newProjectile.GetComponent<Rigidbody2D>();
+            if (projRb != null)
+            {
+                projRb.velocity = transform.right * 10f; // Shoots in the direction the player is facing
+            }
         }
     }
+
+    // SelectProjectile() method for better modularity
+    GameObject SelectProjectile()
+    {
+        int randomProjectile = UnityEngine.Random.Range(0, 3);
+        switch (randomProjectile)
+        {
+            case 0: return tomatoPrefab;
+            case 1: return eggPrefab;
+            case 2: return birdPrefab;
+            default: return tomatoPrefab;
+        }
+    }
+
 
     void UsePowerUp()
     {
@@ -95,5 +109,10 @@ public class PlayerController : MonoBehaviour
     public void GrantPowerUp()
     {
         hasPowerUp = true;
+    }
+    public void Heal(int amount)
+    {
+        health = Mathf.Min(10, health + amount); // Cap at 10 health
+        FindObjectOfType<HealthBar>().UpdateHealth(health);
     }
 }
