@@ -33,7 +33,8 @@ public class GroundGenerator : MonoBehaviour
 
     GameObject SelectGroundType()
     {
-        int randomType = Random.Range(0, 3);
+        // Explicitly using UnityEngine.Random to resolve ambiguity
+        int randomType = UnityEngine.Random.Range(0, 3);
         switch (randomType)
         {
             case 0: return normalGroundPrefab; // Normal gravity

@@ -21,7 +21,13 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int i = 0; i < enemyCount; i++)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(-spawnArea.x, spawnArea.x), Random.Range(-spawnArea.y, spawnArea.y), 0);
+            // Explicitly use UnityEngine.Random
+            Vector3 spawnPosition = new Vector3(
+                UnityEngine.Random.Range(-spawnArea.x, spawnArea.x),
+                UnityEngine.Random.Range(-spawnArea.y, spawnArea.y),
+                0
+            );
+
             GameObject selectedEnemy = SelectEnemyType();
             Instantiate(selectedEnemy, spawnPosition, Quaternion.identity);
         }
@@ -29,7 +35,9 @@ public class EnemySpawner : MonoBehaviour
 
     GameObject SelectEnemyType()
     {
-        int randomType = Random.Range(0, 3);
+        // Explicitly use UnityEngine.Random
+        int randomType = UnityEngine.Random.Range(0, 3);
+
         switch (randomType)
         {
             case 0: return chaserPrefab;

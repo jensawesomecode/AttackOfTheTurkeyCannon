@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -59,7 +58,8 @@ public class PlayerController : MonoBehaviour
 
     void Shoot()
     {
-        int randomProjectile = Random.Range(0, 3);
+        // Explicitly use UnityEngine.Random to avoid ambiguity
+        int randomProjectile = UnityEngine.Random.Range(0, 3);
         GameObject projectile = null;
 
         switch (randomProjectile)
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         if (hasPowerUp)
         {
-            Debug.Log("Power-Up Activated!");
+            UnityEngine.Debug.Log("Power-Up Activated!"); // Explicitly using UnityEngine.Debug to resolve ambiguity
             hasPowerUp = false; // Assume single-use power-ups
         }
     }

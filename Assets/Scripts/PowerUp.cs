@@ -7,29 +7,32 @@ public class PowerUp : MonoBehaviour
     public enum PowerUpType { SpeedBoost, GravityAnchor, JumpBoost }
     public PowerUpType powerUpEffect;
 
-    serializedField PlayerMovement
+    [SerializeField]
+    private PlayerMovement playerMovement; // Corrected the misplaced brackets
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             PlayerMovement player = other.GetComponent<PlayerMovement>();
-            if (player != null)
+            Rigidbody2D rb = other.GetComponent<Rigidbody2D>(); // Optimize by calling GetComponent only once
+
+            if (player != null && rb != null)
             {
                 switch (powerUpEffect)
                 {
                     case PowerUpType.SpeedBoost:
-                        player.GetComponent<Rigidbody2D>().velocity *= 1.5f;
+                        rb.velocity *= 1.5f;
                         break;
                     case PowerUpType.GravityAnchor:
                         player.SetGravity(1.0f);
                         break;
                     case PowerUpType.JumpBoost:
-                        player.GetComponent<Rigidbody2D>().velocity = new Vector2(player.GetComponent<Rigidbody2D>().velocity.x, 10f);
+                        rb.velocity = new Vector2(rb.velocity.x, 10f);
                         break;
                 }
             }
-            Destroy(gameObject);
+            Destroy(gameObject); // Destroy the power-up after application
         }
     }
 }

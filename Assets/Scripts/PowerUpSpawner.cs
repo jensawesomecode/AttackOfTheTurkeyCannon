@@ -21,7 +21,13 @@ public class PowerUpSpawner : MonoBehaviour
     {
         for (int i = 0; i < powerUpCount; i++)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(-spawnArea.x, spawnArea.x), Random.Range(-spawnArea.y, spawnArea.y), 0);
+            // Use UnityEngine.Random to generate the spawn position
+            Vector3 spawnPosition = new Vector3(
+                UnityEngine.Random.Range(-spawnArea.x, spawnArea.x),
+                UnityEngine.Random.Range(-spawnArea.y, spawnArea.y),
+                0
+            );
+
             GameObject selectedPowerUp = SelectPowerUpType();
             Instantiate(selectedPowerUp, spawnPosition, Quaternion.identity);
         }
@@ -29,7 +35,9 @@ public class PowerUpSpawner : MonoBehaviour
 
     GameObject SelectPowerUpType()
     {
-        int randomType = Random.Range(0, 3);
+        // Use UnityEngine.Random instead of System.Random
+        int randomType = UnityEngine.Random.Range(0, 3);
+
         switch (randomType)
         {
             case 0: return speedBoostPrefab;
