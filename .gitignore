@@ -12,6 +12,8 @@
 *.csproj
 *.sln
 *.userprefs
+*.vs/
+*.vsidx
 
 # OS-specific
 .DS_Store
